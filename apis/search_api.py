@@ -2,9 +2,6 @@ import argparse
 import os
 import sys
 import uvicorn
-
-
-# Adjust the Python path to include the root directory of the project
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from fastapi import FastAPI, Depends
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
@@ -18,7 +15,7 @@ from documents.query_results_extractor import QueryResultsExtractor
 from documents.webpage_content_extractor import BatchWebpageContentExtractor
 from utils.logger import logger
 
-# Show time 
+
 class SearchAPIApp:
     def __init__(self):
         self.app = FastAPI(
@@ -176,3 +173,6 @@ if __name__ == "__main__":
         uvicorn.run("__main__:app", host=args.server, port=args.port, reload=True)
     else:
         uvicorn.run("__main__:app", host=args.server, port=args.port, reload=False)
+
+    # python -m apis.search_api      # [Docker] in product mode
+    # python -m apis.search_api -d   # [Dev]    in develop mode
