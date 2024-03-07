@@ -1,0 +1,10 @@
+beautifulsoup4
+fastapi
+markdownify
+pydantic
+Requests
+sse_starlette
+termcolor
+tiktoken
+tldextract
+uvicorn
