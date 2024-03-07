@@ -100,9 +100,8 @@ pip install -r requirements.txt
 
 ```
 
-### Usage
 
-1.How to run server?
+3.How to run server?
 
 ```
 
@@ -115,9 +114,20 @@ cd apis
 python search_api.py
 
 ```
-2. In replit
+### In replit just clone this repl
 
 [![Run on Replit](https://replit.com/badge/github/OE-LUCIFER/Google-Search-API)](https://replit.com/@helpingai/Google-Search-API?v=1)
+
+### [Heroku Quick Deploy](https://heroku.com/about)
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/OE-LUCIFER/Google-Search-API)
+
+Provides:
+- Easy Deployment of App
+- A HTTPS url (https://\<your app name\>.herokuapp.com)
+
+Notes:
+- Requires a **PAID** Heroku Account.
+- Sometimes has issues with auto-redirecting to `https`. Make sure to navigate to the `https` version of your app before adding as a default search engine.
 
 
 ## License
