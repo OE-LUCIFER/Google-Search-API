@@ -4,6 +4,8 @@ from pathlib import Path
 from urllib.parse import quote, unquote
 
 
+# What characters are forbidden in Windows and Linux directory names?
+#   https://stackoverflow.com/questions/1976007/what-characters-are-forbidden-in-windows-and-linux-directory-names
 
 INVALID_FILE_PATH_CHARS = [
     "\\",
@@ -94,10 +96,11 @@ class QueryToFilepathConverter(FilepathConverter):
 
 
 if __name__ == "__main__":
-    query = "python Vortex"
+    query = "python"
     query_converter = QueryToFilepathConverter()
     print(query_converter.convert(query))
 
+    # url = "https://trafilatura.readthedocs.io/en/latest/quickstart.html"
     url = (
         "https://stackoverflow.com/questions/295135/turn-a-string-into-a-valid-filename"
     )
