@@ -17,32 +17,24 @@ class QueryResultsExtractor:
         self.query = self.soup.find("textarea").text.strip()
         query_result_elements = self.soup.find_all("div", class_="g")
         for idx, result in enumerate(query_result_elements):
-            cite_element = result.find("cite")
-            if cite_element is not None:
-                span_element = cite_element.find_previous("span")
-                if span_element is not None:
-                    site = span_element.text.strip()
-                else:
-                    site = "" # Default value if span is not found
-            else:
-                site = "" # Default value if cite is not found
-
-            url = result.find("a")["href"] if result.find("a") else ""
-            title = result.find("h3").text.strip() if result.find("h3") else ""
+            site = result.find("cite").find_previous("span").text.strip()
+            url = result.find("a")["href"]
+            title = result.find("h3").text.strip()
 
             abstract_element_conditions = [
                 {"data-sncf": "1"},
                 {"class_": "ITZIwc"},
             ]
-            abstract = ""
             for condition in abstract_element_conditions:
                 abstract_element = result.find("div", condition)
                 if abstract_element is not None:
                     abstract = abstract_element.text.strip()
                     break
+            else:
+                abstract = ""
 
             logger.mesg(
-                f"{title}\n" f" - {site}\n" f" - {url}\n" f" - {abstract}\n" f"\n"
+                f"{title}\n" f"  - {site}\n" f"  - {url}\n" f"  - {abstract}\n" f"\n"
             )
             self.query_results.append(
                 {
@@ -55,6 +47,16 @@ class QueryResultsExtractor:
                 }
             )
         logger.success(f"- {len(query_result_elements)} query results")
+
+    def extract_related_questions(self):
+        related_question_elements = self.soup.find_all(
+            "div", class_="related-question-pair"
+        )
+        for question_element in related_question_elements:
+            question = question_element.find("span").text.strip()
+            print(question)
+            self.related_questions.append(question)
+        logger.success(f"- {len(self.related_questions)} related questions")
 
     def extract(self, html_path):
         self.load_html(html_path)
