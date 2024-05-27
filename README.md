@@ -6,15 +6,17 @@
 
 
 
-1. [Introduction](#introduction)
-
-2. [Project Structure](#project-structure)
-
-3. [Technologies](#technologies)
-
-4. [Setup and Installation](#setup-and-installation)
-
-5. [License](#license)
+- [Google-Search-API](#google-search-api)
+  - [Table of Contents](#table-of-contents)
+  - [Introduction](#introduction)
+  - [Project Structure](#project-structure)
+  - [Technologies](#technologies)
+  - [Setup and Installation](#setup-and-installation)
+    - [Prerequisites](#prerequisites)
+    - [Installation Steps](#installation-steps)
+    - [In replit just clone this repl](#in-replit-just-clone-this-repl)
+    - [Heroku Quick Deploy](#heroku-quick-deploy)
+  - [License](#license)
 
 
 
@@ -129,9 +131,48 @@ Notes:
 - Requires a **PAID** Heroku Account.
 - Sometimes has issues with auto-redirecting to `https`. Make sure to navigate to the `https` version of your app before adding as a default search engine.
 
+```python
+# Thanks to Himanshu Aggarwal for This python code
+import os
+import sys
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+from documents.webpage_content_extractor import BatchWebpageContentExtractor
+from networks.webpage_fetcher import BatchWebpageFetcher
+from documents.query_results_extractor import QueryResultsExtractor
+from networks.google_searcher import GoogleSearcher
 
+def finalextractor():
+    print('---------------Here Running for GoogleSearch--------------------')
+    google_searcher = GoogleSearcher()
+    query_results_extractor = QueryResultsExtractor()
+    query_html_path = google_searcher.search(
+                    query='mango',
+                    result_num=10,
+                    safe=False,
+                    overwrite=False,
+                )
+    query_search_results = query_results_extractor.extract(query_html_path)
+    urls = []
+    for query_extracts in query_search_results['query_results']:
+        urls.append(query_extracts['url'])  # Ensure this key exists to avoid KeyError
+    print('---------------Batch Webpage Fetcher--------------------')
+    batch_webpage_fetcher = BatchWebpageFetcher()
+    url_and_html_path_list = batch_webpage_fetcher.fetch(
+                    urls,
+                    overwrite=False,
+                    output_parent=query_search_results["query"],
+                )
+    print('---------------Batch Webpage Extractor--------------------')
+    batch_webpage_content_extractor = BatchWebpageContentExtractor()
+    webpageurls = [url_and_html['html_path'] for url_and_html in url_and_html_path_list]
+    html_path_and_extracted_content_list = (
+                    batch_webpage_content_extractor.extract(webpageurls)
+                )
+    for html_path_and_extracted_content in html_path_and_extracted_content_list: 
+        print(html_path_and_extracted_content['extracted_content'])
+
+finalextractor()
+```
 ## License
-
-
 
 This project is licensed under the HelpingAI Simplified Universal License. For the full license text, please check the [LICENSE.md](https://raw.githubusercontent.com/OE-LUCIFER/Google-Search-API/main/LICENSE.md) file in the project repository.
